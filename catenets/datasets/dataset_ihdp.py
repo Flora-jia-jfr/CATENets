@@ -52,6 +52,7 @@ def load_data_npz(fname: Path, get_po: bool = True) -> dict:
     data["HAVE_TRUTH"] = not data["ycf"] is None
     data["dim"] = data["X"].shape[1]
     data["n"] = data["X"].shape[0]
+    data["ate"] = data_in["ate"]
 
     return data
 

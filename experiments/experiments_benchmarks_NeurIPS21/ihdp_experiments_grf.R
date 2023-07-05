@@ -127,3 +127,5 @@ do_ihdp_exper <- function(n_exp = 100,
     }
   }
 }
+
+do_ihdp_exper()

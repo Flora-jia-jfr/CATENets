@@ -63,6 +63,8 @@ def do_ihdp_experiments(
         ["exp", "run", "cate_var_in", "cate_var_out", "y_var_in"]
         + [name + "_in" for name in models.keys()]
         + [name + "_out" for name in models.keys()]
+        + [name + "_ate_in" for name in models.keys()]
+        + [name + "_ate_out" for name in models.keys()]
     )
     writer.writerow(header)
 
@@ -81,8 +83,8 @@ def do_ihdp_experiments(
         data_exp = get_one_data_set(data_train, i_exp=i_exp, get_po=True)
         data_exp_test = get_one_data_set(data_test, i_exp=i_exp, get_po=True)
 
-        X, y, w, cate_true_in, X_t, cate_true_out = prepare_ihdp_data(
-            data_exp, data_exp_test, setting=setting
+        X, y, w, cate_true_in, X_t, cate_true_out, mu0, mu1, mu0_t, mu1_t = prepare_ihdp_data(
+            data_exp, data_exp_test, setting=setting, return_pos=True
         )
 
         # compute some stats
@@ -93,6 +95,8 @@ def do_ihdp_experiments(
         for k in range(n_reps):
             pehe_in = []
             pehe_out = []
+            ate_in = []
+            ate_out = []
 
             for model_name, estimator in models.items():
                 print(f"Experiment {i_exp}, run {k}, with {model_name}")
@@ -110,8 +114,15 @@ def do_ihdp_experiments(
                 pehe_in.append(eval_root_mse(cate_pred_in, cate_true_in))
                 pehe_out.append(eval_root_mse(cate_pred_out, cate_true_out))
 
+                ate_train = np.mean(mu1 - mu0)
+                ate_test = np.mean(mu1 - mu0)
+                ate_in.append(abs(np.mean(cate_pred_in) - ate_train))
+                ate_out.append(abs(np.mean(cate_pred_out) - ate_test))
+                print("ate_in: ", ate_in)
+                print("ate_out: ", ate_out)
+
             writer.writerow(
-                [i_exp, k, cate_var_in, cate_var_out, y_var_in] + pehe_in + pehe_out
+                [i_exp, k, cate_var_in, cate_var_out, y_var_in] + pehe_in + pehe_out + ate_in + ate_out
             )
 
     out_file.close()

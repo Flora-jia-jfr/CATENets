@@ -29,7 +29,7 @@ def init_arg() -> Any:
     parser.add_argument("--setting", default="C", type=str)
     parser.add_argument("--experiment", default="ihdp", type=str)
     parser.add_argument("--file_name", default="results", type=str)
-    parser.add_argument("--n_exp", default=10, type=int)
+    parser.add_argument("--n_exp", default=100, type=int)
     parser.add_argument("--n_reps", default=5, type=int)
     parser.add_argument("--pre_trans", type=bool, default=False)
     parser.add_argument("--simu_num", type=int, default=2)
