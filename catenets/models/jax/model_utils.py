@@ -98,3 +98,16 @@ def heads_l2_penalty(
             [jnp.sum(params_1[i][0] ** 2) for i in range(0, 2 * n_layers_out + 1, 2)]
         )
     return weightsq_1 + weightsq_0
+
+def single_head_l2_penalty(
+    params_0: jnp.ndarray,
+    n_layers_out: jnp.ndarray,
+    reg_diff: jnp.ndarray,
+    penalty_0: jnp.ndarray,
+    penalty_1: jnp.ndarray,
+) -> jnp.ndarray:
+    # Compute l2 penalty for output head.
+    weightsq_0 = penalty_0 * sum(
+        [jnp.sum(params_0[i][0] ** 2) for i in range(0, 2 * n_layers_out + 1, 2)]
+    )
+    return weightsq_0

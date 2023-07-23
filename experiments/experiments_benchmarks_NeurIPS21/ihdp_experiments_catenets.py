@@ -12,10 +12,11 @@ from sklearn import clone
 
 from catenets.datasets.dataset_ihdp import get_one_data_set, load_raw, prepare_ihdp_data
 from catenets.experiment_utils.base import eval_root_mse
-from catenets.models.jax import RNET_NAME, T_NAME, TARNET_NAME, RNet, TARNet, TNet
+from catenets.models.jax import RNET_NAME, T_NAME, TARNET_NAME, TARNET_SINGLE_NAME, RNet, TARNet, TNet, TARNet_single
+from catenets.models.jax import TARNet_SINGLE_2_NAME, TARNet_single_2
 
 DATA_DIR = Path("catenets/datasets/data/")
-RESULT_DIR = Path("results/experiments_benchmarking/ihdp/")
+RESULT_DIR = Path("results/experiments_benchmarking/ihdp/test/")
 SEP = "_"
 
 PARAMS_DEPTH = {"n_layers_r": 3, "n_layers_out": 2}
@@ -27,9 +28,11 @@ PARAMS_DEPTH_2 = {
 }
 
 ALL_MODELS = {
-    T_NAME: TNet(**PARAMS_DEPTH),
+    # T_NAME: TNet(**PARAMS_DEPTH),
+    # RNET_NAME: RNet(**PARAMS_DEPTH_2),
+    TARNET_SINGLE_NAME: TARNet_single(**PARAMS_DEPTH),
     TARNET_NAME: TARNet(**PARAMS_DEPTH),
-    RNET_NAME: RNet(**PARAMS_DEPTH_2),
+    TARNet_SINGLE_2_NAME: TARNet_single_2(**PARAMS_DEPTH)
 }
 
 
@@ -118,8 +121,8 @@ def do_ihdp_experiments(
                 ate_test = np.mean(mu1 - mu0)
                 ate_in.append(abs(np.mean(cate_pred_in) - ate_train))
                 ate_out.append(abs(np.mean(cate_pred_out) - ate_test))
-                print("ate_in: ", ate_in)
-                print("ate_out: ", ate_out)
+                # print("ate_in: ", ate_in)
+                # print("ate_out: ", ate_out)
 
             writer.writerow(
                 [i_exp, k, cate_var_in, cate_var_out, y_var_in] + pehe_in + pehe_out + ate_in + ate_out

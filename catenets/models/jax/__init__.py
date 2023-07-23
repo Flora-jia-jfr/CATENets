@@ -13,6 +13,8 @@ from catenets.models.jax.pseudo_outcome_nets import (
     RANet,
 )
 from catenets.models.jax.representation_nets import DragonNet, SNet1, SNet2, TARNet
+from catenets.models.jax.tarnet_single import TARNet_single
+from catenets.models.jax.tarnet_single_2 import TARNet_single_2
 from catenets.models.jax.rnet import RNet
 from catenets.models.jax.snet import SNet
 from catenets.models.jax.tnet import TNet
@@ -30,9 +32,11 @@ DRNET_NAME = "DRNet"
 PWNET_NAME = "PWNet"
 RANET_NAME = "RANet"
 TARNET_NAME = "TARNet"
+TARNET_SINGLE_NAME = "TARNet_single"
 FLEXTE_NAME = "FlexTENet"
 OFFSET_NAME = "OffsetNet"
 DRAGON_NAME = "DragonNet"
+TARNet_SINGLE_2_NAME = "TARNet_single_2"
 
 ALL_MODELS = [
     T_NAME,
@@ -47,6 +51,8 @@ ALL_MODELS = [
     PWNET_NAME,
     RANET_NAME,
     TARNET_NAME,
+    TARNET_SINGLE_NAME,
+    TARNet_SINGLE_2_NAME,
     FLEXTE_NAME,
     OFFSET_NAME,
 ]
@@ -63,6 +69,8 @@ MODEL_DICT = {
     PWNET_NAME: PWNet,
     RANET_NAME: RANet,
     TARNET_NAME: TARNet,
+    TARNET_SINGLE_NAME: TARNet_single,
+    TARNet_SINGLE_2_NAME: TARNet_single_2,
     DRAGON_NAME: DragonNet,
     OFFSET_NAME: OffsetNet,
     FLEXTE_NAME: FlexTENet,
@@ -81,6 +89,8 @@ __all__ = [
     PWNET_NAME,
     RANET_NAME,
     TARNET_NAME,
+    TARNET_SINGLE_NAME,
+    TARNet_SINGLE_2_NAME,
     DRAGON_NAME,
     FLEXTE_NAME,
     OFFSET_NAME,
