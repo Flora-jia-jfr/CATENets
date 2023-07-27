@@ -66,8 +66,8 @@ def get_acic_covariates(
 
                 enc.fit(np.array(X[[cols_]]).reshape((-1, 1)))
 
-                for k in range(len(list(enc.get_feature_names()))):
-                    X[cols_ + list(enc.get_feature_names())[k]] = enc.transform(
+                for k in range(len(list(enc.get_feature_names_out()))):
+                    X[cols_ + list(enc.get_feature_names_out())[k]] = enc.transform(
                         np.array(X[[cols_]]).reshape((-1, 1))
                     ).toarray()[:, k]
 

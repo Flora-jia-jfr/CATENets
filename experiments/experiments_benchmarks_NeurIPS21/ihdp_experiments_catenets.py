@@ -16,7 +16,7 @@ from catenets.models.jax import RNET_NAME, T_NAME, TARNET_NAME, TARNET_SINGLE_NA
 from catenets.models.jax import TARNet_SINGLE_2_NAME, TARNet_single_2
 
 DATA_DIR = Path("catenets/datasets/data/")
-RESULT_DIR = Path("results/experiments_benchmarking/ihdp/test/")
+RESULT_DIR = Path("results/experiments_benchmarking/ihdp/comparsion/")
 SEP = "_"
 
 PARAMS_DEPTH = {"n_layers_r": 3, "n_layers_out": 2}

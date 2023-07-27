@@ -291,19 +291,18 @@ def train_tarnet_single_2(
             loss = jnp.sum(weights * ((preds - targets) ** 2))
             return loss
 
-    # else:
+    else:
 
-    #     def loss_head(
-    #         params: List, batch: Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]
-    #     ) -> jnp.ndarray:
-    #         print("========define loss function========")
-    #         # mse loss function
-    #         inputs, targets, weights = batch
-    #         preds = predict_fun_head(params, inputs)
-    #         return -jnp.sum(
-    #             weights
-    #             * (targets * jnp.log(preds) + (1 - targets) * jnp.log(1 - preds))
-    #         )
+        def loss_head(
+            params: List, batch: Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]
+        ) -> jnp.ndarray:
+            # mse loss function
+            inputs, targets, weights = batch
+            preds = predict_fun_head(params, inputs)
+            return -jnp.sum(
+                weights
+                * (targets * jnp.log(preds) + (1 - targets) * jnp.log(1 - preds))
+            )
 
     # complete loss function for all parts
     @jit

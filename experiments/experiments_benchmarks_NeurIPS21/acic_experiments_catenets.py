@@ -11,9 +11,10 @@ from sklearn import clone
 
 from catenets.datasets import load
 from catenets.experiment_utils.base import eval_root_mse
-from catenets.models.jax import RNET_NAME, T_NAME, TARNET_NAME, RNet, TARNet, TNet
+from catenets.models.jax import RNET_NAME, T_NAME, TARNET_NAME, TARNET_SINGLE_NAME, RNet, TARNet, TNet, TARNet_single
+from catenets.models.jax import TARNet_SINGLE_2_NAME, TARNet_single_2
 
-RESULT_DIR = Path("results/experiments_benchmarking/acic2016/")
+RESULT_DIR = Path("results/experiments_benchmarking/acic2016/comparsion/")
 SEP = "_"
 
 PARAMS_DEPTH = {"n_layers_r": 3, "n_layers_out": 2}
@@ -25,9 +26,11 @@ PARAMS_DEPTH_2 = {
 }
 
 ALL_MODELS = {
-    T_NAME: TNet(**PARAMS_DEPTH),
+    # T_NAME: TNet(**PARAMS_DEPTH),
     TARNET_NAME: TARNet(**PARAMS_DEPTH),
-    RNET_NAME: RNet(**PARAMS_DEPTH_2),
+    # RNET_NAME: RNet(**PARAMS_DEPTH_2),
+    TARNET_SINGLE_NAME: TARNet_single(**PARAMS_DEPTH),
+    TARNet_SINGLE_2_NAME: TARNet_single_2(**PARAMS_DEPTH)
 }
 
 

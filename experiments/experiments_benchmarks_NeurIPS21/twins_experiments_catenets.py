@@ -14,10 +14,11 @@ from sklearn.model_selection import train_test_split
 
 from catenets.datasets import load
 from catenets.experiment_utils.base import eval_root_mse
-from catenets.models.jax import RNET_NAME, T_NAME, TARNET_NAME, RNet, TARNet, TNet
+from catenets.models.jax import RNET_NAME, T_NAME, TARNET_NAME, TARNET_SINGLE_NAME, RNet, TARNet, TNet, TARNet_single
+from catenets.models.jax import TARNet_SINGLE_2_NAME, TARNet_single_2
 
 RESULT_DIR = Path("results/experiments_benchmarking/twins/")
-EXP_DIR = Path("experiments/experiments_benchmarks_NeurIPS21/twins_datasets/")
+EXP_DIR = Path("experiments/experiments_benchmarks_NeurIPS21/twins_datasets/comparsion/")
 SEP = "_"
 
 PARAMS_DEPTH = {"n_layers_r": 1, "n_layers_out": 1}
@@ -29,9 +30,11 @@ PARAMS_DEPTH_2 = {
 }
 
 ALL_MODELS = {
-    T_NAME: TNet(**PARAMS_DEPTH),
+    # T_NAME: TNet(**PARAMS_DEPTH),
     TARNET_NAME: TARNet(**PARAMS_DEPTH),
-    RNET_NAME: RNet(**PARAMS_DEPTH_2),
+    # RNET_NAME: RNet(**PARAMS_DEPTH_2),
+    TARNET_SINGLE_NAME: TARNet_single(**PARAMS_DEPTH),
+    TARNet_SINGLE_2_NAME: TARNet_single_2(**PARAMS_DEPTH)
 }
 
 

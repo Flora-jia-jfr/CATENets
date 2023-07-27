@@ -146,36 +146,18 @@ class TARNet_single(BaseCATENet):
 
 # Training functions for TARNet_single ------------------------------------------------
 
-def mmd2_lin(X: jnp.ndarray, w: jnp.ndarray) -> jnp.ndarray:
-    # Squared Linear MMD as implemented in CFR
-    # jax does not support indexing, so this is a workaround with reweighting in means
-    n = w.shape[0]
-    n_t = jnp.sum(w)
-
-    # normalize X so scale matters
-    X = X / jnp.sqrt(jnp.var(X, axis=0))
-
-    mean_control = (n / (n - n_t)) * jnp.mean((1 - w) * X, axis=0)
-    mean_treated = (n / n_t) * jnp.mean(w * X, axis=0)
-
-    return jnp.sum((mean_treated - mean_control) ** 2)
-
-
 def predict_tarnet_single(
     X: jnp.ndarray,
     trained_params: dict,
     predict_funs: list,
     return_po: bool = False,
     return_prop: bool = False,
-    w: jnp.ndarray = None
 ) -> jnp.ndarray:
     # print("========predict tarnet single========")
     if return_prop:
         raise NotImplementedError("TARNet_single does not implement a propensity model.")
 
     # unpack inputs
-    # print("trained_params: ", len(trained_params))
-
     predict_fun_repr, predict_fun_head = predict_funs
     param_repr, param_single = (
         trained_params[0],
@@ -283,7 +265,6 @@ def train_tarnet_single(
         def loss_head(
             params: List, batch: Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]
         ) -> jnp.ndarray:
-            # print("========define loss function========")
             # mse loss function
             # batch: (reps, y, w/1-w)
             inputs, targets, weights = batch
@@ -291,19 +272,18 @@ def train_tarnet_single(
             loss = jnp.sum(weights * ((preds - targets) ** 2))
             return loss
 
-    # else:
+    else:
 
-    #     def loss_head(
-    #         params: List, batch: Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]
-    #     ) -> jnp.ndarray:
-    #         print("========define loss function========")
-    #         # mse loss function
-    #         inputs, targets, weights = batch
-    #         preds = predict_fun_head(params, inputs)
-    #         return -jnp.sum(
-    #             weights
-    #             * (targets * jnp.log(preds) + (1 - targets) * jnp.log(1 - preds))
-    #         )
+        def loss_head(
+            params: List, batch: Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]
+        ) -> jnp.ndarray:
+            # mse loss function
+            inputs, targets, weights = batch
+            preds = predict_fun_head(params, inputs)
+            return -jnp.sum(
+                weights
+                * (targets * jnp.log(preds) + (1 - targets) * jnp.log(1 - preds))
+            )
 
     # complete loss function for all parts
     @jit
@@ -329,10 +309,6 @@ def train_tarnet_single(
 
         reps_0 = predict_fun_repr(params[0], X_concat_w_0)
         reps_1 = predict_fun_repr(params[0], X_concat_w_1)
-
-        # get mmd
-        # TODO: check with defu, I think this is the same meaning as domain confusion, should abandon this
-        # disc = mmd2_lin(reps_1, w)
 
         # pass down to two heads
         loss_0 = loss_head(params[1], (reps_0, y, 1-w))
