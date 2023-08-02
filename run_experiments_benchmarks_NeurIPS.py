@@ -19,6 +19,9 @@ from experiments.experiments_benchmarks_NeurIPS21.ihdp_experiments_catenets impo
 from experiments.experiments_benchmarks_NeurIPS21.twins_experiments_catenets import (
     do_twins_experiment_loop,
 )
+from experiments.experiments_benchmarks_NeurIPS21.speedDating_experiments_catenets import (
+    do_speedDating_experiments,
+)
 
 log.add(sink=sys.stderr, level="DEBUG")
 
@@ -40,14 +43,14 @@ def init_arg() -> Any:
 
 if __name__ == "__main__":
     args = init_arg()
-    if (args.experiment == "ihdp") or (args.experiment == "IHDP"):
+    if args.experiment.lower() == "ihdp":
         do_ihdp_experiments(
             file_name=args.file_name,
             n_exp=args.n_exp,
             setting=args.setting,
             n_reps=args.n_reps,
         )
-    elif (args.experiment == "acic") or (args.experiment == "ACIC"):
+    elif args.experiment.lower() == "acic":
         do_acic_experiments(
             file_name=args.file_name,
             n_reps=args.n_reps,
@@ -55,8 +58,11 @@ if __name__ == "__main__":
             n_exp=args.n_exp,
             pre_trans=args.pre_trans,
         )
-    elif (args.experiment == "twins") or (args.experiment == "Twins"):
+    elif args.experiment.lower() == "twins":
         do_twins_experiment_loop(file_name=args.file_name, n_exp=args.n_reps)
+    # Implement SpeedDating
+    elif args.experiment.lower() == "speeddating":
+        do_speedDating_experiments()
 
     else:
         raise ValueError(
