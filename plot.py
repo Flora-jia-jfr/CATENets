@@ -49,7 +49,7 @@ def IHDP_plot(setting="C", first_50=False, dir_path=None, forest=False):
     # plt.scatter(cate_var_out, TNet_out, color='red', label='TNet')
     plt.scatter(cate_var_out, TARNet_out, color='green', label='TARNet')
     plt.scatter(cate_var_out, TARNet_single_out, color='purple', label='TARNet_single')
-    plt.scatter(cate_var_out, TARNet_single_2_out, color='black', label='TARNet_single_2')
+    plt.scatter(cate_var_out, TARNet_single_2_out, color='orange', label='TARNet_single_2')
     # plt.scatter(cate_var_out, MLP_CATENet_out, color='black', label='MLP_CATENet_out')
     # plt.scatter(cate_var_out, CF_out, color='orange', label='CF')
     # plt.scatter(cate_var_out, TRF_out, color='blue', label='TRF')
@@ -69,13 +69,17 @@ def IHDP_plot(setting="C", first_50=False, dir_path=None, forest=False):
 
 # IHDP_plot(setting="D", first_50=False, dir_path='comparison_tarnet_single_2', forest=False)
 # IHDP_plot(setting="D", first_50=True, dir_path='comparison_tarnet_single_2', forest=False)
-# IHDP_plot(setting="C", first_50=False, dir_path='comparison', forest=False)
-# IHDP_plot(setting="C", first_50=True, dir_path='comparison', forest=False)
+IHDP_plot(setting="C", first_50=False, dir_path='comparison', forest=False)
+IHDP_plot(setting="C", first_50=True, dir_path='comparison', forest=False)
+IHDP_plot(setting="D", first_50=False, dir_path='comparison', forest=False)
+IHDP_plot(setting="D", first_50=True, dir_path='comparison', forest=False)
 # IHDP_plot(setting="D", first_50=False)
 # IHDP_plot(setting="D", first_50=True)
 
-def ACIC2016_plot(data_dir='results/experiments_benchmarking/acic2016/comparsion'):
+def ACIC2016_plot(data_dir='results/experiments_benchmarking/acic2016/comparsion', first_50=False):
     df = pd.read_csv(os.path.join(data_dir, 'results_False_2_4000.csv'))
+    if first_50:
+        df = df.sort_values(by='cate_var_out', ascending=True).head(50)
     cate_var_out = df['cate_var_out'].tolist()
     TARNet_out = df['TARNet_out'].tolist()
     TARNet_single_out = df['TARNet_single_out'].tolist()
@@ -86,19 +90,24 @@ def ACIC2016_plot(data_dir='results/experiments_benchmarking/acic2016/comparsion
     # scatter plots
     plt.scatter(cate_var_out, TARNet_out, color='green', label='TARNet')
     plt.scatter(cate_var_out, TARNet_single_out, color='purple', label='TARNet_single')
-    plt.scatter(cate_var_out, TARNet_single_2_out, color='black', label='TARNet_single_2')
+    plt.scatter(cate_var_out, TARNet_single_2_out, color='orange', label='TARNet_single_2')
 
     # labels
     plt.xlabel('Variance')
     plt.ylabel('RMSE')
     plt.legend()
 
-    if not os.path.exists(f"plots/ACIC_2016/comparison/"):
-        os.makedirs(f"plots/ACIC_2016/comparison/")
+    if first_50:
+        file_name = "ACIC_2016_first_50.png"
+    else:
+        file_name = "ACIC_2016.png"
+    if not os.path.exists("plots/ACIC_2016/comparison/"):
+        os.makedirs("plots/ACIC_2016/comparison/")
 
-    plt.savefig(f"plots/ACIC_2016/comparison/ACIC_2016.png")
+    plt.savefig(f"plots/ACIC_2016/comparison/{file_name}")
 
-# ACIC2016_plot()
+ACIC2016_plot()
+ACIC2016_plot(first_50=True)
 
 def twins_plot(data_dir='results/experiments_benchmarking/twins'):
     subset_list = ['500', '1000', '2000', '5000', 'None']
@@ -115,7 +124,7 @@ def twins_plot(data_dir='results/experiments_benchmarking/twins'):
         # scatter plots
         plt.scatter(range(5), TARNet_pehe, color='green', label='TARNet')
         plt.scatter(range(5), TARNet_single_pehe, color='purple', label='TARNet_single')
-        plt.scatter(range(5), TARNet_single_2_pehe, color='black', label='TARNet_single_2')
+        plt.scatter(range(5), TARNet_single_2_pehe, color='orange', label='TARNet_single_2')
 
         # labels
         plt.xlabel('Variance')

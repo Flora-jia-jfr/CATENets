@@ -324,16 +324,14 @@ def train_tarnet_single_2(
         # print("X: ", X.shape) # (100, 25)
         # print("y: ", y.shape) # (100, 1)
         # print("w: ", w.shape) # (100, 1)
-        reps_concat_w_0 = jnp.concatenate((reps, 1 - w), axis=-1)
-        reps_concat_w_1 = jnp.concatenate((reps, w), axis=-1)
+        reps_concat_w = jnp.concatenate((reps, w), axis=-1)
 
-        # get mmd
-        # TODO: check with defu, I think this is the same meaning as domain confusion, should abandon this
+        # get rid of mmd
         # disc = mmd2_lin(reps_1, w)
 
         # pass down to two heads
-        loss_0 = loss_head(params[1], (reps_concat_w_0, y, 1-w))
-        loss_1 = loss_head(params[1], (reps_concat_w_1, y, w))
+        loss_0 = loss_head(params[1], (reps_concat_w, y, 1-w))
+        loss_1 = loss_head(params[1], (reps_concat_w, y, w))
         # loss_0 = loss_head(params[1], (reps, y, 1 - w))
         # loss_1 = loss_head(params[1], (reps, y, w))
 

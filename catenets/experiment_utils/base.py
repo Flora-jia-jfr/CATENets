@@ -29,7 +29,6 @@ from catenets.models.jax.transformation_utils import (
 
 SEP = "_"
 
-
 def eval_mse_model(
     inputs: jnp.ndarray,
     targets: jnp.ndarray,

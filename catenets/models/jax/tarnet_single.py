@@ -304,17 +304,14 @@ def train_tarnet_single(
         # print("X: ", X.shape) # (100, 25)
         # print("y: ", y.shape) # (100, 1)
         # print("w: ", w.shape) # (100, 1)
-        X_concat_w_0 = jnp.concatenate((X, 1 - w), axis=1)
-        X_concat_w_1 = jnp.concatenate((X, w), axis=1)
-
-        reps_0 = predict_fun_repr(params[0], X_concat_w_0)
-        reps_1 = predict_fun_repr(params[0], X_concat_w_1)
+        # correct the error in my modification
+        X_concat_w = jnp.concatenate((X, w), axis=1)
+        reps = predict_fun_repr(params[0], X_concat_w)
 
         # pass down to two heads
-        loss_0 = loss_head(params[1], (reps_0, y, 1-w))
-        loss_1 = loss_head(params[1], (reps_1, y, w))
-        # loss_0 = loss_head(params[1], (reps, y, 1 - w))
-        # loss_1 = loss_head(params[1], (reps, y, w))
+        loss_0 = loss_head(params[1], (reps, y, 1-w))
+        loss_1 = loss_head(params[1], (reps, y, w))
+
 
         # regularization on representation
         weightsq_body = sum(
