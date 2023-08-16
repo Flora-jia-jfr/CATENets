@@ -78,12 +78,14 @@ def do_twins_experiments(
     )
 
     writer = csv.writer(out_file)
-    header = [name + "_pehe" for name in models.keys()]
+    header = [name + "_pehe" for name in models.keys()] \
+            + [name + "_ate" for name in models.keys()]
 
     writer.writerow(header)
 
     for i_exp in range(n_exp):
         pehe_out = []
+        ate_out = []
 
         # get data
         X, X_t, y, w, y0_out, y1_out = prepare_twins(
@@ -108,7 +110,9 @@ def do_twins_experiments(
 
             pehe_out.append(eval_root_mse(cate_pred_out, ite_out))
 
-        writer.writerow(pehe_out)
+            ate_out.append(abs(onp.mean(cate_pred_out) - onp.mean(ite_out)))
+
+        writer.writerow(pehe_out + ate_out)
 
     out_file.close()
 

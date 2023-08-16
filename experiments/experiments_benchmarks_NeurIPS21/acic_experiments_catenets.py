@@ -70,6 +70,8 @@ def do_acic_experiments(
         ["file_name", "run", "cate_var_in", "cate_var_out", "y_var_in"]
         + [name + "_in" for name in models.keys()]
         + [name + "_out" for name in models.keys()]
+        + [name + "_ate_in" for name in models.keys()]
+        + [name + "_ate_out" for name in models.keys()]
     )
     writer.writerow(header)
 
@@ -93,6 +95,8 @@ def do_acic_experiments(
         for k in range(n_reps):
             pehe_in = []
             pehe_out = []
+            ate_in = []
+            ate_out = []
 
             for model_name, estimator in models.items():
                 print(f"Experiment {i_exp}, run {k}, with {model_name}")
@@ -108,8 +112,13 @@ def do_acic_experiments(
                 pehe_in.append(eval_root_mse(cate_pred_in, cate_in))
                 pehe_out.append(eval_root_mse(cate_pred_out, cate_out))
 
+                ate_train = np.mean(cate_in)
+                ate_test = np.mean(cate_out)
+                ate_in.append(abs(np.mean(cate_pred_in) - ate_train))
+                ate_out.append(abs(np.mean(cate_pred_out) - ate_test))
+
             writer.writerow(
-                [i_exp, k, cate_var_in, cate_var_out, y_var_in] + pehe_in + pehe_out
+                [i_exp, k, cate_var_in, cate_var_out, y_var_in] + pehe_in + pehe_out + ate_in + ate_out
             )
 
     out_file.close()

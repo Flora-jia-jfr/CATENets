@@ -49,7 +49,7 @@ def do_speedDating_experiments(
     if not os.path.isdir(RESULT_DIR):
         os.makedirs(RESULT_DIR)
 
-    out_file = open(RESULT_DIR / (file_name + SEP + setting + ".csv"), "w", buffering=1)
+    out_file = open(RESULT_DIR / (file_name + ".csv"), "w", buffering=1)
     writer = csv.writer(out_file)
     # according to SpeedDating: mod, dim, dat
     header = (
@@ -62,7 +62,7 @@ def do_speedDating_experiments(
     writer.writerow(header)
 
     mods = range(1, 5)
-    dims = ['high', 'medium', 'low']
+    dims = ['high', 'med', 'low']
     dats = range(1,11)
 
     for mod_num in mods:

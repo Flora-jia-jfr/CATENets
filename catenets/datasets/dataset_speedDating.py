@@ -24,11 +24,11 @@ torch.manual_seed(1)
 
 def load_data(file_path, mod_num, dim, dat):
     df_path = os.path.join(file_path,
-                       '{}/speedDate{}{}{}.csv'.format(mod_num, mod_num, dim, str(dat)))
+                       'Mod{}/speedDateMod{}{}{}.csv'.format(mod_num, mod_num, dim, str(dat)))
     df = pd.read_csv(df_path)
     data = df.values
-    oracle = pd.read_csv(
-        file_path + '{}/speedDate{}{}Oracle{}.csv'.format(flags.mod, flags.mod, flags.dimension, str(flags.dat)))
+    oracle = pd.read_csv(os.path.join(
+        file_path, 'Mod{}/speedDateMod{}{}Oracle{}.csv'.format(mod_num, mod_num, dim, str(dat))))
     ITE_oracle = oracle['ITE'].values.reshape(-1, 1)
 
     # print("data", data.shape) #(6000, 187)
@@ -52,5 +52,5 @@ def split_data(X, Y, W, ITE_oracle, train_split=0.75):
     data_num = X.shape[0]
     train_num = int(data_num*train_split)
     test_num = data_num - train_num
-    return  X[:train_num], Y[:train_num], T[:train_num], ITE_oracle[:train_num], \
-            X[train_num:], Y[train_num:], T[train_num:], ITE_oracle[train_num:]
+    return  X[:train_num], Y[:train_num], W[:train_num], ITE_oracle[:train_num], \
+            X[train_num:], Y[train_num:], W[train_num:], ITE_oracle[train_num:]
